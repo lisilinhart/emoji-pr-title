@@ -1,21 +1,21 @@
 {
-  "name": "javascript-action",
-  "description": "GitHub Actions JavaScript Template",
-  "version": "0.0.0",
+  "name": "emoji-title-action",
+  "description": "GitHub Actions for prefixing a title with an emojis",
+  "version": "0.0.1",
   "author": "",
   "private": true,
-  "homepage": "https://github.com/actions/javascript-action#readme",
+  "homepage": "https://github.com/lisilinhart/emoji-pr-title#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/javascript-action.git"
+    "url": "git+https://github.com/lisilinhart/emoji-pr-title.git"
   },
   "bugs": {
-    "url": "https://github.com/actions/javascript-action/issues"
+    "url": "https://github.com/lisilinhart/emoji-pr-title/issues"
   },
   "keywords": [
-    "GitHub",
-    "Actions",
-    "JavaScript"
+    "PR",
+    "title",
+    "emoji"
   ],
   "exports": {
     ".": "./dist/index.js"

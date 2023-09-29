@@ -1,5 +1,8 @@
 # Pull Request Title Emoji Prefixer Action
 
+[![GitHub Super-Linter](https://github.com/lisilinhart/emoji-pr-title/actions/workflows/linter.yml/badge.svg)](https://github.com/super-linter/super-linter)
+![CI](https://github.com/lisilinhart/emoji-pr-title/actions/workflows/ci.yml/badge.svg)
+
 This GitHub Action automatically prefixes the title of a pull request with an emoji based on predefined rules in a YAML configuration file located in the `.github` folder. It will default to `.github/emoji-labels.yml` if not other path is specified.
 
 ## Configuration
