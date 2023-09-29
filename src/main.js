@@ -12,13 +12,14 @@ async function run() {
     const inputPath = core.getInput('config_path')
     const octokit = new github.getOctokit(githubToken)
 
-    const configPath = `.github/${inputPath}`
     const context = github.context
+
+    console.log(`Fetching config file from ${inputPath}...`)
 
     const response = await octokit.rest.repos.getContent({
       owner: context.repo.owner,
       repo: context.repo.repo,
-      path: configPath
+      path: inputPath
     })
 
     const content = await Buffer.from(
@@ -60,10 +61,11 @@ async function run() {
       title: newTitle
     })
 
-    console.log('No matching regex found. PR title remains unchanged.')
+    console.log('Set the new title to: ', newTitle)
     core.setOutput('title', newTitle)
   } catch (error) {
     // Fail the workflow run if an error occurs
+    console.log(error)
     core.setFailed(error.message)
   }
 }
