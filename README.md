@@ -10,7 +10,8 @@ It will default to `.github/emoji-labels.yml` if not other path is specified.
 ## Configuration
 
 ```yaml 
-  - name: Prefix with emojis
+  - name: Prefix Emoji to PR Title       
+    uses: lisilinhart/emoji-pr-title@main
     with:
       token: ${{ secrets.GITHUB_TOKEN }}
 #     config_path: emoji-labels.yaml (optional)
@@ -23,14 +24,14 @@ named `emoji-labels.yml`. This configuration file defines rules that map emojis 
 expressions for matching pull request titles. The action will check if the title of a pull request 
 matches any of the defined regular expressions and prepend the corresponding emoji if a match is found.
 
-# Permissions
+## Permissions
 
 ⚠️ This actions requires the `pull_requests` permission to be able to read and update pull request 
 titles. Go to `https://github.com/OWNER/REPO/settings/actions` and under **Workflow permissions** 
 enable **Read and write** permissions.
 
 
-### Configuration (emoji-labels.yml)
+## Configuration (emoji-labels.yml)
 
 The configuration file should be structured as follows:
 
