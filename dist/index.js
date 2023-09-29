@@ -13764,7 +13764,7 @@ async function run() {
     const response = await octokit.rest.repos.getContent({
       owner: context.repo.owner,
       repo: context.repo.repo,
-      path: configPath
+      path: inputPath
     })
 
     const content = await Buffer.from(
