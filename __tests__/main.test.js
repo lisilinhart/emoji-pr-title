@@ -25,7 +25,7 @@ describe('action', () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
       switch (name) {
-        case 'github_token':
+        case 'token':
           return 'abc-token-123'
         default:
           return ''
@@ -40,8 +40,8 @@ describe('action', () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
       switch (name) {
-        case 'github_token':
-          throw new Error('Input required and not supplied: github_token')
+        case 'token':
+          throw new Error('Input required and not supplied: token')
         default:
           return ''
       }
