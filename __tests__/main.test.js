@@ -53,7 +53,7 @@ describe('action', () => {
     // Verify that all of the core library functions were called correctly
     expect(setFailedMock).toHaveBeenNthCalledWith(
       1,
-      'Parameter token or opts.auth is required'
+      'Input required and not supplied: token'
     )
   })
 })
