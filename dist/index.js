@@ -13765,7 +13765,7 @@ async function run() {
       owner: context.repo.owner,
       repo: context.repo.repo,
       path: inputPath,
-      ref: context.sha,
+      ref: context.ref,
       headers: {
         'X-GitHub-Api-Version': '2022-11-28'
       }
