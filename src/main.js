@@ -2,23 +2,6 @@ const core = require('@actions/core')
 const github = require('@actions/github')
 const yaml = require('js-yaml')
 
-const githubToken = core.getInput('token')
-const octokit = new github.getOctokit(githubToken)
-
-async function getConfig(configPath) {
-  const response = await octokit.repos.getContent({
-    owner: github.context.repo.owner,
-    repo: github.context.repo.repo,
-    path: configPath
-  })
-
-  const content = await Buffer.from(
-    response.data.content,
-    response.data.encoding
-  ).toString()
-  return yaml.load(content)
-}
-
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
@@ -26,11 +9,25 @@ async function getConfig(configPath) {
 async function run() {
   try {
     console.log('init')
+    const githubToken = core.getInput('token')
+    const octokit = new github.getOctokit(githubToken)
+    console.log('octokit connectes', Object.keys(octokit))
 
     const inputPath = core.getInput('config_path')
     const configPath = `.github/${inputPath}`
-    const configRepo = github.context.repo
-    const rules = getConfig(configPath)
+
+    const response = await octokit.repos.getContent({
+      owner: github.context.repo.owner,
+      repo: github.context.repo.repo,
+      path: configPath
+    })
+
+    const content = await Buffer.from(
+      response.data.content,
+      response.data.encoding
+    ).toString()
+
+    const rules = yaml.load(content)
 
     console.log(rules)
 
