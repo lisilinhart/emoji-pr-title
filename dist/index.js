@@ -13749,11 +13749,10 @@ const yaml = __nccwpck_require__(1917)
 const githubToken = core.getInput('token')
 const octokit = new github.getOctokit(githubToken)
 
-async function getConfig(client, configPath, configRepo) {
-  const response = await client.repos.getContent({
+async function getConfig(configPath) {
+  const response = await octokit.repos.getContent({
     owner: github.context.repo.owner,
     repo: github.context.repo.repo,
-    ref: github.context.sha,
     path: configPath
   })
 
@@ -13775,7 +13774,7 @@ async function run() {
     const inputPath = core.getInput('config_path')
     const configPath = `.github/${inputPath}`
     const configRepo = github.context.repo
-    const rules = getConfig(octokit, configPath, configRepo)
+    const rules = getConfig(configPath)
 
     console.log(rules)
 
