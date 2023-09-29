@@ -25,7 +25,7 @@ describe('action', () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
       switch (name) {
-        case 'github_token':
+        case 'token':
           return 'abc-token-123'
         default:
           return ''
@@ -34,21 +34,14 @@ describe('action', () => {
 
     await main.run()
     expect(runMock).toHaveReturned()
-
-    // Verify that all of the core library functions were called correctly
-    expect(setOutputMock).toHaveBeenNthCalledWith(
-      1,
-      'time',
-      expect.stringMatching('abc')
-    )
   })
 
   it('fails if no input is provided', async () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
       switch (name) {
-        case 'github_token':
-          throw new Error('Input required and not supplied: github_token')
+        case 'token':
+          throw new Error('Input required and not supplied: token')
         default:
           return ''
       }
@@ -60,7 +53,7 @@ describe('action', () => {
     // Verify that all of the core library functions were called correctly
     expect(setFailedMock).toHaveBeenNthCalledWith(
       1,
-      'Input required and not supplied: github_token'
+      'Input required and not supplied: token'
     )
   })
 })

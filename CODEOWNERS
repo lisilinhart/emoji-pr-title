@@ -1,4 +1,3 @@
 # Repository CODEOWNERS
 
-* @actions/actions-runtime
-* @lisi_linhart
+@lisilinhart

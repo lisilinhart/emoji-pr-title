@@ -1,5 +1,5 @@
 name: 'Emojify PR Title'
-description: 'Prefix your PT title with the correct emoji'
+description: 'Prefix your PR title with the correct emoji'
 author: '@lisi_linhart'
 
 # Define your inputs here.
@@ -7,7 +7,7 @@ inputs:
   config_path:
     description: 'Path for emoji labeling'
     default: '.github/emoji-labels.yml'
-  github_token:
+  token:
     description: 'GitHub Token'
     required: true
 

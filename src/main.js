@@ -1,7 +1,5 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
-const fs = require('fs')
-const path = require('path')
 const yaml = require('js-yaml')
 
 /**
@@ -10,14 +8,26 @@ const yaml = require('js-yaml')
  */
 async function run() {
   try {
+    const githubToken = core.getInput('token')
     const inputPath = core.getInput('config_path')
-    const githubToken = core.getInput('githubToken')
-    const inputYml = fs.readFileSync(`.github/${inputPath}`, 'utf8')
-    const rules = yaml.load(inputYml)
+    const octokit = new github.getOctokit(githubToken)
+    const configPath = `.github/${inputPath}`
+    const context = github.context
 
-    console.log(rules)
+    const response = await octokit.rest.repos.getContent({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      path: inputPath
+    })
 
-    const prTitle = github.context.payload.pull_request.title || ''
+    const content = await Buffer.from(
+      response.data.content,
+      response.data.encoding
+    ).toString()
+
+    const rules = yaml.load(content)
+
+    const prTitle = context.payload.pull_request.title || ''
     const prTitleLower = prTitle.toLowerCase()
 
     let matchedEmoji = null
@@ -41,12 +51,11 @@ async function run() {
       return
     }
 
-    const octokit = new github.getOctokit(githubToken)
     const newTitle = `${matchedEmoji} ${prTitle}`
-    await octokit.pulls.update({
-      owner: github.context.repo.owner,
-      repo: github.context.repo.repo,
-      pull_number: github.context.payload.pull_request.number,
+    await octokit.rest.pulls.update({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      pull_number: context.payload.pull_request.number,
       title: newTitle
     })
 
