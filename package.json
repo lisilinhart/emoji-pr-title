@@ -1,7 +1,7 @@
 {
   "name": "emoji-title-action",
   "description": "GitHub Actions for prefixing a title with an emojis",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "",
   "private": true,
   "homepage": "https://github.com/lisilinhart/emoji-pr-title#readme",

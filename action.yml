@@ -1,4 +1,4 @@
-name: 'Emojify PR Title'
+name: 'Prefix Emoji to PR Title'
 description: 'Prefix your PR title with the correct emoji'
 author: '@lisi_linhart'
 
@@ -14,3 +14,7 @@ inputs:
 runs:
   using: node20
   main: dist/index.js
+
+branding:
+  icon: "git-pull-request"
+  color: "yellow"
