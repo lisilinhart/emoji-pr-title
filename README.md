@@ -15,6 +15,11 @@ This GitHub Action automatically prefixes the title of a pull request with an em
 
 To use this action, you need to create a configuration file in your repository's `.github` folder named `emoji-labels.yml`. This configuration file defines rules that map emojis to specific regular expressions for matching pull request titles. The action will check if the title of a pull request matches any of the defined regular expressions and prepend the corresponding emoji if a match is found.
 
+# Permissions
+
+⚠️ This actions requires the `pull_requests` permission to be able to read and update pull request titles. Go to `https://github.com/OWNER/REPO/settings/actions` and under **Workflow permissions** enable **Read and write** permissions.
+
+
 ### Configuration (emoji-labels.yml)
 
 The configuration file should be structured as follows:
