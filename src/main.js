@@ -15,12 +15,16 @@ async function run() {
     const context = github.context
 
     console.log(`Fetching config file from ${inputPath}...`)
+    console.log(`SHA: ${context.sha}`)
 
     const response = await octokit.rest.repos.getContent({
       owner: context.repo.owner,
       repo: context.repo.repo,
       path: inputPath,
-      ref: context.sha
+      ref: context.ref,
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
     })
 
     const content = await Buffer.from(
