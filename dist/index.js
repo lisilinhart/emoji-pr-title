@@ -13754,14 +13754,16 @@ async function run() {
   try {
     console.log('init')
     const githubToken = core.getInput('token')
-    const octokit = new github.getOctokit(githubToken)
-
     const inputPath = core.getInput('config_path')
+    const octokit = new github.getOctokit(githubToken)
     const configPath = `.github/${inputPath}`
+    const context = github.context
+
+    console.log(context.repo.owner, github.context.repo.repo, configPath)
 
     const response = await octokit.rest.repos.getContent({
-      owner: github.context.repo.owner,
-      repo: github.context.repo.repo,
+      owner: context.repo.owner,
+      repo: context.repo.repo,
       path: configPath
     })
 
@@ -13774,7 +13776,7 @@ async function run() {
 
     console.log(rules)
 
-    const prTitle = github.context.payload.pull_request.title || ''
+    const prTitle = context.payload.pull_request.title || ''
     const prTitleLower = prTitle.toLowerCase()
 
     let matchedEmoji = null
@@ -13800,9 +13802,9 @@ async function run() {
 
     const newTitle = `${matchedEmoji} ${prTitle}`
     await octokit.rest.pulls.update({
-      owner: github.context.repo.owner,
-      repo: github.context.repo.repo,
-      pull_number: github.context.payload.pull_request.number,
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      pull_number: context.payload.pull_request.number,
       title: newTitle
     })
 
@@ -13810,6 +13812,7 @@ async function run() {
     core.setOutput('title', newTitle)
   } catch (error) {
     // Fail the workflow run if an error occurs
+    console.error(error)
     core.setFailed(error.message)
   }
 }
