@@ -7,7 +7,7 @@ This GitHub Action automatically prefixes the title of a pull request with an em
 ```yaml 
   - name: Prefix with emojis
     with:
-      github_token: ${{ secrets.GITHUB_TOKEN }}
+      token: ${{ secrets.GITHUB_TOKEN }}
 #     config_path: emoji-labels.yaml (optional)
 ```
 
