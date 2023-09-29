@@ -1,5 +1,8 @@
 const core = require('@actions/core')
-const { wait } = require('./wait')
+const github = require('@actions/github');
+const { Octokit } = require('@octokit/rest');
+const fs = require('fs');
+const path = require('path');
 
 /**
  * The main function for the action.
@@ -7,18 +10,45 @@ const { wait } = require('./wait')
  */
 async function run() {
   try {
-    const ms = core.getInput('milliseconds', { required: true })
+    const inputPath = core.getInput('config_path')
+    const githubToken = core.getInput('githubToken')
+    const inputYmlPath = path.join(__dirname, '.github', inputPath);
+    const rules = yaml.safeLoad(inputYml);
+    
+    const prTitle = github.context.payload.pull_request.title || '';
+    const prTitleLower = prTitle.toLowerCase();
 
-    // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-    core.debug(`Waiting ${ms} milliseconds ...`)
+    let matchedEmoji = null;
+    for (const rule of rules.labels) {
+      const regex = new RegExp(rule.title);
+      if (regex.test(prTitleLower)) {
+        matchedEmoji = rule.emoji;
+        break;
+      }
+    }
 
-    // Log the current timestamp, wait, then log the new timestamp
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    // If no emoji is found, do nothing
+    if (!matchedEmoji) {
+      console.log('No matching emoji found.');
+      return;
+    }
 
-    // Set outputs for other workflow steps to use
-    core.setOutput('time', new Date().toTimeString())
+    const emojiRegex = /^\p{Extended_Pictographic}/u;
+    if (emojiRegex.test(prTitle)) {
+      console.log('Title starts with an emoji. No update needed.');
+      return;
+    }
+
+    const octokit = new github.getOctokit(githubToken)
+    const newTitle = `${matchedEmoji} ${prTitle}`;
+    await octokit.pulls.update({
+      owner: github.context.repo.owner,
+      repo: github.context.repo.repo,
+      pull_number: github.context.payload.pull_request.number,
+      title: newTitle,
+    });
+
+    console.log('No matching regex found. PR title remains unchanged.');
   } catch (error) {
     // Fail the workflow run if an error occurs
     core.setFailed(error.message)

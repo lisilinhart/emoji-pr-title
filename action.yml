@@ -1,18 +1,15 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Emojify PR Title'
+description: 'Prefix your PT title with the correct emoji'
+author: '@lisi_linhart'
 
 # Define your inputs here.
-inputs:
-  milliseconds:
-    description: 'Your input description here'
+inputs: 
+  config_path:
+    description: 'Path for emoji labeling'
+    default: '.github/emoji-labels.yml'
+  github_token:
+    description: 'GitHub Token'
     required: true
-    default: '1000'
-
-# Define your outputs here.
-outputs:
-  time:
-    description: 'Your output description here'
 
 runs:
   using: node20
