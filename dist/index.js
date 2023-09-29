@@ -13750,14 +13750,10 @@ const githubToken = core.getInput('token')
 const octokit = new github.getOctokit(githubToken)
 
 async function getConfig(client, configPath, configRepo) {
-  const [owner, repo] = configRepo.split('/')
   const response = await client.repos.getContent({
-    owner,
-    repo,
-    ref:
-      configRepo === github.context.payload.repository?.full_name
-        ? github.context.sha
-        : undefined,
+    owner: github.context.repo.owner,
+    repo: github.context.repo.repo,
+    ref: github.context.sha,
     path: configPath
   })
 
