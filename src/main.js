@@ -11,13 +11,14 @@ async function run() {
     const githubToken = core.getInput('token')
     const inputPath = core.getInput('config_path')
     const octokit = new github.getOctokit(githubToken)
+
     const configPath = `.github/${inputPath}`
     const context = github.context
 
     const response = await octokit.rest.repos.getContent({
       owner: context.repo.owner,
       repo: context.repo.repo,
-      path: inputPath
+      path: configPath
     })
 
     const content = await Buffer.from(
