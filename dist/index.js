@@ -13744,9 +13744,26 @@ function wrappy (fn, cb) {
 
 const core = __nccwpck_require__(2186)
 const github = __nccwpck_require__(5438)
-const fs = __nccwpck_require__(7147)
-const path = __nccwpck_require__(1017)
 const yaml = __nccwpck_require__(1917)
+
+async function getConfig(client, configPath, configRepo) {
+  const [owner, repo] = configRepo.split('/')
+  const response = await client.repos.getContent({
+    owner,
+    repo,
+    ref:
+      configRepo === github.context.payload.repository?.full_name
+        ? github.context.sha
+        : undefined,
+    path: configPath
+  })
+
+  const content = await Buffer.from(
+    response.data.content,
+    response.data.encoding
+  ).toString()
+  return yaml.load(content)
+}
 
 /**
  * The main function for the action.
@@ -13756,8 +13773,10 @@ async function run() {
   try {
     const inputPath = core.getInput('config_path')
     const githubToken = core.getInput('githubToken')
-    const inputYml = fs.readFileSync(`.github/${inputPath}`, 'utf8')
-    const rules = yaml.load(inputYml)
+    const octokit = new github.getOctokit(githubToken)
+    const configPath = `.github/${inputPath}`
+    const configRepo = github.context.repo
+    const rules = getConfig(octokit, configPath, configRepo)
 
     console.log(rules)
 
@@ -13785,7 +13804,6 @@ async function run() {
       return
     }
 
-    const octokit = new github.getOctokit(githubToken)
     const newTitle = `${matchedEmoji} ${prTitle}`
     await octokit.pulls.update({
       owner: github.context.repo.owner,

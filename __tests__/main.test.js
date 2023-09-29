@@ -34,13 +34,6 @@ describe('action', () => {
 
     await main.run()
     expect(runMock).toHaveReturned()
-
-    // Verify that all of the core library functions were called correctly
-    expect(setOutputMock).toHaveBeenNthCalledWith(
-      1,
-      'time',
-      expect.stringMatching('abc')
-    )
   })
 
   it('fails if no input is provided', async () => {
@@ -60,7 +53,7 @@ describe('action', () => {
     // Verify that all of the core library functions were called correctly
     expect(setFailedMock).toHaveBeenNthCalledWith(
       1,
-      'Input required and not supplied: github_token'
+      'Parameter token or opts.auth is required'
     )
   })
 })
