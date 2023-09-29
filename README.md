@@ -10,11 +10,19 @@ It will default to `.github/emoji-labels.yml` if not other path is specified.
 ## Configuration
 
 ```yaml 
-  - name: Prefix Emoji to PR Title       
-    uses: lisilinhart/emoji-pr-title@v0.0.6
-    with:
-      token: ${{ secrets.GITHUB_TOKEN }}
-#     config_path: '.github/my-labels.yml' (optional)
+name: PR Title Emoji
+
+on: pull_request
+
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prefix Emoji to PR Title       
+        uses: lisilinhart/emoji-pr-title@v0.0.7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+    #     config_path: '.github/my-labels.yml' (optional)
 ```
 
 ## Usage
