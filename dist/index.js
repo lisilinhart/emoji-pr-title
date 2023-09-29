@@ -13752,14 +13752,11 @@ const yaml = __nccwpck_require__(1917)
  */
 async function run() {
   try {
-    console.log('init')
     const githubToken = core.getInput('token')
     const inputPath = core.getInput('config_path')
     const octokit = new github.getOctokit(githubToken)
     const configPath = `.github/${inputPath}`
     const context = github.context
-
-    console.log(context.repo.owner, github.context.repo.repo, configPath)
 
     const response = await octokit.rest.repos.getContent({
       owner: context.repo.owner,
@@ -13773,8 +13770,6 @@ async function run() {
     ).toString()
 
     const rules = yaml.load(content)
-
-    console.log(rules)
 
     const prTitle = context.payload.pull_request.title || ''
     const prTitleLower = prTitle.toLowerCase()
@@ -13812,7 +13807,6 @@ async function run() {
     core.setOutput('title', newTitle)
   } catch (error) {
     // Fail the workflow run if an error occurs
-    console.error(error)
     core.setFailed(error.message)
   }
 }
