@@ -34,12 +34,12 @@ async function run() {
 
     const rules = yaml.load(content)
 
-    const prTitle = context.payload.pull_request.title || ''
+    const prTitle = context.payload.pull_request?.title || ''
     const prTitleLower = prTitle.toLowerCase()
 
     let matchedEmoji = null
     for (const rule of rules.labels) {
-      const regex = new RegExp(rule.title)
+      const regex = new RegExp(rule?.title)
       if (regex.test(prTitleLower)) {
         matchedEmoji = rule.emoji
         break
